@@ -3,17 +3,11 @@
 import pickle
 import numpy
 
-import music21.instrument as instrument
-import music21.note as note
-import music21.stream as stream
-import music21.chord as chord
+import music21
+import tensorflow as tf
+import tensorflow.keras as keras
 
-from tensorflow.keras.models import Sequential
-from tensorflow.keras.layers import Dense
-from tensorflow.keras.layers import Dropout
-from tensorflow.keras.layers import LSTM
-from tensorflow.keras.layers import BatchNormalization as BatchNorm
-from tensorflow.keras.layers import Activation
+music21.
 
 def generate():
     """ Generate a piano midi file """
@@ -34,7 +28,7 @@ def generate():
 def prepare_sequences(notes, pitchnames, n_vocab):
     """ Prepare the sequences used by the Neural Network """
     # map between notes and integers and back
-    note_to_int = dict((note, number) for number, note in enumerate(pitchnames))
+    note_to_int = dict((music21.note, number) for number, music21.note in enumerate(pitchnames))
 
     sequence_length = 100
     network_input = []
@@ -56,23 +50,23 @@ def prepare_sequences(notes, pitchnames, n_vocab):
 
 def create_network(network_input, n_vocab):
     """ create the structure of the neural network """
-    model = Sequential()
-    model.add(LSTM(
+    model = keras.models.Sequential()
+    model.add(keras.layers.LSTM(
         512,
         input_shape=(network_input.shape[1], network_input.shape[2]),
         recurrent_dropout=0.3,
         return_sequences=True
     ))
-    model.add(LSTM(512, return_sequences=True, recurrent_dropout=0.3,))
-    model.add(LSTM(512))
-    model.add(BatchNorm())
-    model.add(Dropout(0.3))
-    model.add(Dense(256))
-    model.add(Activation('relu'))
-    model.add(BatchNorm())
-    model.add(Dropout(0.3))
-    model.add(Dense(n_vocab))
-    model.add(Activation('softmax'))
+    model.add(keras.layers.LSTM(512, return_sequences=True, recurrent_dropout=0.3,))
+    model.add(keras.layers.LSTM(512))
+    model.add(keras.layers.BatchNormalization())
+    model.add(keras.layers.Dropout(0.3))
+    model.add(keras.layers.Dense(256))
+    model.add(keras.layers.Activation('relu'))
+    model.add(keras.layers.BatchNormalization())
+    model.add(keras.layers.Dropout(0.3))
+    model.add(keras.layers.Dense(n_vocab))
+    model.add(keras.layers.Activation('softmax'))
     model.compile(loss='categorical_crossentropy', optimizer='rmsprop')
 
     # Load the weights to each node
@@ -85,7 +79,7 @@ def generate_notes(model, network_input, pitchnames, n_vocab):
     # pick a random sequence from the input as a starting point for the prediction
     start = numpy.random.randint(0, len(network_input)-1)
 
-    int_to_note = dict((number, note) for number, note in enumerate(pitchnames))
+    int_to_note = dict((number, m21.note) for number, m21.note in enumerate(pitchnames))
 
     pattern = network_input[start]
     prediction_output = []
@@ -119,23 +113,23 @@ def create_midi(prediction_output):
             notes_in_chord = pattern.split('.')
             notes = []
             for current_note in notes_in_chord:
-                new_note = note.Note(int(current_note))
-                new_note.storedInstrument = instrument.Piano()
+                new_note = m21.note.Note(int(current_note))
+                new_note.storedInstrument = m21.instrument.Piano()
                 notes.append(new_note)
-            new_chord = chord.Chord(notes)
+            new_chord = m21.chord.Chord(notes)
             new_chord.offset = offset
             output_notes.append(new_chord)
         # pattern is a note
         else:
-            new_note = note.Note(pattern)
+            new_note = m21.note.Note(pattern)
             new_note.offset = offset
-            new_note.storedInstrument = instrument.Piano()
+            new_note.storedInstrument = m21.instrument.Piano()
             output_notes.append(new_note)
 
         # increase offset each iteration so that notes do not stack
         offset += 0.5
 
-    midi_stream = stream.Stream(output_notes)
+    midi_stream = m21.stream.Stream(output_notes)
 
     midi_stream.write('midi', fp='test_output.mid')
 
