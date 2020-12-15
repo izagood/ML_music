@@ -1,5 +1,4 @@
-""" This module generates notes for a midi file using the
-    trained neural network """
+""" This module generates notes for a midi file using the trained neural network """
 import pickle
 import numpy
 
