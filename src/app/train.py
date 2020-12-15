@@ -4,9 +4,19 @@ import glob
 import pickle
 import numpy
 
-import music21 as m21
-import tensorflow as tf
-import tensorflow.keras as keras
+import music21.converter as converter
+import music21.instrument as instrument
+import music21.note as note
+import music21.chord as chord
+
+from tensorflow.keras.models import Sequential
+from tensorflow.keras.layers import Dense
+from tensorflow.keras.layers import Dropout
+from tensorflow.keras.layers import LSTM
+from tensorflow.keras.layers import Activation
+from tensorflow.keras.layers import BatchNormalization
+from tensorflow.keras.utils import np_utils
+from tensorflow.keras.callbacks import ModelCheckpoint
 
 def train_network():
     """ Train a Neural Network to generate music """
@@ -26,7 +36,7 @@ def get_notes():
     notes = []
 
     for file in glob.glob("../../midi_songs/*.mid"):
-        midi = m21.converter.parse(file)
+        midi = converter.parse(file)
 
         print("Parsing %s" % file)
 
@@ -34,16 +44,16 @@ def get_notes():
 
         try:
             # file has instrument parts
-            s2 = m21.instrument.partitionByInstrument(midi)
+            s2 = instrument.partitionByInstrument(midi)
             notes_to_parse = s2.parts[0].recurse() 
         except Exception:
             # file has notes in a flat structure
             notes_to_parse = midi.flat.notes
 
         for element in notes_to_parse:
-            if isinstance(element, m21.note.Note):
+            if isinstance(element, note.Note):
                 notes.append(str(element.pitch))
-            elif isinstance(element, m21.chord.Chord):
+            elif isinstance(element, chord.Chord):
                 notes.append('.'.join(str(n) for n in element.normalOrder))
 
     with open('data/notes', 'wb') as filepath:
@@ -78,29 +88,29 @@ def prepare_sequences(notes, n_vocab):
     # normalize input
     network_input = network_input / float(n_vocab)
 
-    network_output = keras.utils.np_utils.to_categorical(network_output)
+    network_output = np_utils.to_categorical(network_output)
 
     return (network_input, network_output)
 
 def create_network(network_input, n_vocab):
     """ create the structure of the neural network """
-    model = keras.models.Sequential()
-    model.add(keras.layers.LSTM(
+    model = Sequential()
+    model.add(LSTM(
         512,
         input_shape=(network_input.shape[1], network_input.shape[2]),
         recurrent_dropout=0.3,
         return_sequences=True
     ))
-    model.add(keras.layers.LSTM(512, return_sequences=True, recurrent_dropout=0.3,))
-    model.add(keras.layers.LSTM(512))
-    model.add(keras.layers.BatchNormalization())
-    model.add(keras.layers.Dropout(0.3))
-    model.add(keras.layers.Dense(256))
-    model.add(keras.layers.Activation('relu'))
-    model.add(keras.layers.BatchNormalization())
-    model.add(keras.layers.Dropout(0.3))
-    model.add(keras.layers.Dense(n_vocab))
-    model.add(keras.layers.Activation('softmax'))
+    model.add(LSTM(512, return_sequences=True, recurrent_dropout=0.3,))
+    model.add(LSTM(512))
+    model.add(BatchNormalization())
+    model.add(Dropout(0.3))
+    model.add(Dense(256))
+    model.add(Activation('relu'))
+    model.add(BatchNormalization())
+    model.add(Dropout(0.3))
+    model.add(Dense(n_vocab))
+    model.add(Activation('softmax'))
     model.compile(loss='categorical_crossentropy', optimizer='rmsprop')
 
     return model
@@ -108,7 +118,7 @@ def create_network(network_input, n_vocab):
 def train(model, network_input, network_output):
     """ train the neural network """
     filepath = "weights-improvement-{epoch:02d}-{loss:.4f}-bigger.hdf5"
-    checkpoint = keras.callbacks.ModelCheckpoint(
+    checkpoint = ModelCheckpoint(
         filepath,
         monitor='loss',
         verbose=0,
