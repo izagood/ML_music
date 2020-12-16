@@ -9,14 +9,14 @@ import music21.note as note
 import music21.chord as chord
 
 def get_notes():
-    """ Get all the notes and chords from the midi files in the ./midi_songs directory """
+    """ 모든 notes 와 chords 는 midi files 에 있다 in the ./midi_songs directory """
     # notes 리스트
     notes = []
 
     for file in glob.glob("../../midi_songs/*.mid"):
         # file을 music21을 streamObj로 변환
         midi = converter.parse(file)
-
+        
         print("Parsing %s" % file)
 
         notes_to_parse = None
