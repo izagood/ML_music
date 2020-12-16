@@ -1,4 +1,5 @@
 """ This module prepares midi file data and feeds it to the neural network for training """
+
 import glob
 import pickle
 import numpy
@@ -20,9 +21,11 @@ from tensorflow.keras.callbacks import ModelCheckpoint
 
 def get_notes():
     """ Get all the notes and chords from the midi files in the ./midi_songs directory """
+    # notes 리스트
     notes = []
 
     for file in glob.glob("../../midi_songs/*.mid"):
+        # file을 music21을 streamObj로 변환
         midi = converter.parse(file)
 
         print("Parsing %s" % file)
@@ -30,7 +33,7 @@ def get_notes():
         notes_to_parse = None
 
         try:
-            # file has instrument parts
+            # file에 instrument parts가 있을 때
             s2 = instrument.partitionByInstrument(midi)
             notes_to_parse = s2.parts[0].recurse()
         except Exception:
