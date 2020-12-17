@@ -109,6 +109,12 @@ def create_network(network_input, n_vocab):
 
     return model
 
+notes = get_notes()
+n_vocab = len(set(notes))
+
+network_input, network_output = prepare_sequences(notes, n_vocab)
+
+model = create_network(network_input, n_vocab)
 
 def train(model, network_input, network_output):
     """ train the neural network """
@@ -125,20 +131,5 @@ def train(model, network_input, network_output):
     model.fit(network_input, network_output, epochs=200,
               batch_size=128, callbacks=callbacks_list)
 
-
-def train_network():
-    """ Train a Neural Network to generate music """
-    notes = get_notes()
-
-    # get amount of pitch names
-    n_vocab = len(set(notes))
-
-    network_input, network_output = prepare_sequences(notes, n_vocab)
-
-    model = create_network(network_input, n_vocab)
-
-    train(model, network_input, network_output)
-
-
 if __name__ == '__main__':
-    train_network()
+    train(model, network_input, network_output)

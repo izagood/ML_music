@@ -85,6 +85,10 @@ def prepare_sequences(notes, n_vocab):
 
     return (network_input, network_output)
 
+notes = get_notes()
+n_vocab = len(set(notes))
+
+network_input, network_output = prepare_sequences(notes, n_vocab)
 
 def create_network(network_input, n_vocab):
     """ create the structure of the neural network """
@@ -109,36 +113,5 @@ def create_network(network_input, n_vocab):
 
     return model
 
-
-def train(model, network_input, network_output):
-    """ train the neural network """
-    filepath = "weights-improvement-{epoch:02d}-{loss:.4f}-bigger.hdf5"
-    checkpoint = ModelCheckpoint(
-        filepath,
-        monitor='loss',
-        verbose=0,
-        save_best_only=True,
-        mode='min'
-    )
-    callbacks_list = [checkpoint]
-
-    model.fit(network_input, network_output, epochs=200,
-              batch_size=128, callbacks=callbacks_list)
-
-
-def train_network():
-    """ Train a Neural Network to generate music """
-    notes = get_notes()
-
-    # get amount of pitch names
-    n_vocab = len(set(notes))
-
-    network_input, network_output = prepare_sequences(notes, n_vocab)
-
-    model = create_network(network_input, n_vocab)
-
-    train(model, network_input, network_output)
-
-
 if __name__ == '__main__':
-    train_network()
+    create_network(network_input, n_vocab)

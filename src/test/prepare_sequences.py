@@ -18,16 +18,22 @@ from tensorflow.keras.layers import BatchNormalization
 from tensorflow.keras.utils import np_utils
 from tensorflow.keras.callbacks import ModelCheckpoint
 
-
 def get_notes():
-    """ Get all the notes and chords from the midi files in the ./midi_songs directory """
+    """ 모든 note 와 chors 는 ./midi_songs 경로에 있는 mid files에 있다."""
     # notes 리스트
     notes = []
 
     for file in glob.glob("../../midi_songs/*.mid"):
-        # file을 music21을 streamObj로 변환
-        midi = converter.parse(file)
 
+        """ file을 music21을 streamObj로 로드(load)
+            streamObj를 사용하면 파일에 있는 모든 note와 chord 목록이 나온다.
+            note - 계이름(pitch)의 문자열 표기법을 사용하여 다시 만들 수 있으므로
+            모든 note 객체의 계이름을 문자열 표기법으로 추가한다.
+            그리고 각 note를 점(.)로 나누어 현 안에 있는 모든 음들의 id를 하나의 문자열로 인코딩해서
+            모든 화음을 추가한다.
+            이러한 인코딩을 통해 생성된 출력을 올바른 note와 chrod로 쉽게 디코딩할 수 있다."""
+        midi = converter.parse(file)
+        
         print("Parsing %s" % file)
 
         notes_to_parse = None
@@ -51,6 +57,8 @@ def get_notes():
 
     return notes
 
+notes = get_notes()
+n_vocab = len(set(notes))
 
 def prepare_sequences(notes, n_vocab):
     """ Prepare the sequences used by the Neural Network """
@@ -85,60 +93,5 @@ def prepare_sequences(notes, n_vocab):
 
     return (network_input, network_output)
 
-
-def create_network(network_input, n_vocab):
-    """ create the structure of the neural network """
-    model = Sequential()
-    model.add(LSTM(
-        512,
-        input_shape=(network_input.shape[1], network_input.shape[2]),
-        recurrent_dropout=0.3,
-        return_sequences=True
-    ))
-    model.add(LSTM(512, return_sequences=True, recurrent_dropout=0.3,))
-    model.add(LSTM(512))
-    model.add(BatchNormalization())
-    model.add(Dropout(0.3))
-    model.add(Dense(256))
-    model.add(Activation('relu'))
-    model.add(BatchNormalization())
-    model.add(Dropout(0.3))
-    model.add(Dense(n_vocab))
-    model.add(Activation('softmax'))
-    model.compile(loss='categorical_crossentropy', optimizer='rmsprop')
-
-    return model
-
-
-def train(model, network_input, network_output):
-    """ train the neural network """
-    filepath = "weights-improvement-{epoch:02d}-{loss:.4f}-bigger.hdf5"
-    checkpoint = ModelCheckpoint(
-        filepath,
-        monitor='loss',
-        verbose=0,
-        save_best_only=True,
-        mode='min'
-    )
-    callbacks_list = [checkpoint]
-
-    model.fit(network_input, network_output, epochs=200,
-              batch_size=128, callbacks=callbacks_list)
-
-
-def train_network():
-    """ Train a Neural Network to generate music """
-    notes = get_notes()
-
-    # get amount of pitch names
-    n_vocab = len(set(notes))
-
-    network_input, network_output = prepare_sequences(notes, n_vocab)
-
-    model = create_network(network_input, n_vocab)
-
-    train(model, network_input, network_output)
-
-
 if __name__ == '__main__':
-    train_network()
+    prepare_sequences(notes, n_vocab)
