@@ -3,17 +3,17 @@
 import glob
 import pickle
 
-import music21.converter as converter
-import music21.instrument as instrument
-import music21.note as note
-import music21.chord as chord
+from music21 import instrument
+from music21 import converter
+from music21 import note
+from music21 import chord
 
 def get_notes():
     """ 모든 note 와 chors 는 ./midi_songs 경로에 있는 mid files에 있다."""
     # notes 리스트
     notes = []
     
-    """ glob 디렉토리에 있는 파일 읽어오기 """
+    """ glob - 디렉토리에 있는 파일 읽어오기 """
     for file in glob.glob("../../midi_songs/*.mid"):
 
         """ file을 music21을 streamObj로 로드(load)

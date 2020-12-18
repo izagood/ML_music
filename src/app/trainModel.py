@@ -4,10 +4,10 @@ import glob
 import pickle
 import numpy
 
-import music21.converter as converter
-import music21.instrument as instrument
-import music21.note as note
-import music21.chord as chord
+from music21 import instrument
+from music21 import note
+from music21 import converter
+from music21 import chord
 
 from tensorflow.keras.models import Sequential
 from tensorflow.keras.layers import Dense
