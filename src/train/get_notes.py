@@ -26,7 +26,6 @@ for file in glob.glob("./midi_songs/*.mid"):
     
     # converter 음악 로드
     midi = converter.parse(file)
-    print(type(file))
     
     print("Parsing %s" % file)
 
@@ -46,7 +45,7 @@ for file in glob.glob("./midi_songs/*.mid"):
         elif isinstance(element, chord.Chord):
             notes.append('.'.join(str(n) for n in element.normalOrder))
 
-with open('data/notes', 'wb') as filepath:
+with open('data/notes1', 'wb') as filepath:
     pickle.dump(notes, filepath)
 
 print(notes)

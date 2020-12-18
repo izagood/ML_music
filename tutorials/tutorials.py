@@ -1,9 +1,8 @@
-num: int = 0
+import glob
 
-marks = [1, 2, 3, 4, 5]
+file = glob.glob("data/*")
 
-for mark in marks:
-    num = num +1
-    print(mark)
 
-print(num)
+
+
+print(file)
