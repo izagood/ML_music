@@ -1,8 +1,8 @@
 """ This module prepares midi file data and feeds it to the neural network for training """
 
-import glob
-import pickle
-import numpy
+from glob import glob
+from pickle import dump
+from numpy import reshape
 
 from music21 import instrument
 from music21 import note
@@ -24,7 +24,7 @@ def get_notes():
     # notes 리스트
     notes = []
 
-    for file in glob.glob("../../midi_songs/*.mid"):
+    for file in glob("../../midi_songs/*.mid"):
         # file을 music21을 streamObj로 변환
         midi = converter.parse(file)
 
@@ -47,7 +47,7 @@ def get_notes():
                 notes.append('.'.join(str(n) for n in element.normalOrder))
 
     with open('data/notes', 'wb') as filepath:
-        pickle.dump(notes, filepath)
+        dump(notes, filepath)
 
     return notes
 
@@ -76,7 +76,7 @@ def prepare_sequences(notes, n_vocab):
     n_patterns = len(network_input)
 
     # reshape the input into a format compatible with LSTM layers
-    network_input = numpy.reshape(
+    network_input = reshape(
         network_input, (n_patterns, sequence_length, 1))
     # normalize input
     network_input = network_input / float(n_vocab)

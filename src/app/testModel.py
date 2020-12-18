@@ -1,6 +1,8 @@
 """ This module generates notes for a midi file using the trained neural network """
-import pickle
-import numpy
+from pickle import load
+from numpy import random
+from numpy import reshape
+from numpy import argmax
 
 from music21 import instrument
 from music21 import note
@@ -33,7 +35,7 @@ def prepare_sequences(notes, pitchnames, n_vocab):
     n_patterns = len(network_input)
 
     # reshape the input into a format compatible with LSTM layers
-    normalized_input = numpy.reshape(
+    normalized_input = reshape(
         network_input, (n_patterns, sequence_length, 1))
     # normalize input
     normalized_input = normalized_input / float(n_vocab)
@@ -71,7 +73,7 @@ def create_network(network_input, n_vocab):
 def generate_notes(model, network_input, pitchnames, n_vocab):
     """ Generate notes from the neural network based on a sequence of notes """
     # pick a random sequence from the input as a starting point for the prediction
-    start = numpy.random.randint(0, len(network_input)-1)
+    start = random.randint(0, len(network_input)-1)
 
     int_to_note = dict((number, note)
                        for number, note in enumerate(pitchnames))
@@ -81,12 +83,12 @@ def generate_notes(model, network_input, pitchnames, n_vocab):
 
     # generate 500 notes
     for note_index in range(500):
-        prediction_input = numpy.reshape(pattern, (1, len(pattern), 1))
+        prediction_input = reshape(pattern, (1, len(pattern), 1))
         prediction_input = prediction_input / float(n_vocab)
 
         prediction = model.predict(prediction_input, verbose=0)
 
-        index = numpy.argmax(prediction)
+        index = argmax(prediction)
         result = int_to_note[index]
         prediction_output.append(result)
 
@@ -135,7 +137,7 @@ def generate():
     """ Generate a piano midi file """
     # load the notes used to train the model
     with open('data/notes', 'rb') as filepath:
-        notes = pickle.load(filepath)
+        notes = load(filepath)
 
     # Get all pitch names
     pitchnames = sorted(set(item for item in notes))
