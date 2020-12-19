@@ -26,21 +26,25 @@ notes = []
 # glob - 디렉토리에 있는 파일 읽어오기
 for file in glob.glob("./midi_songs/*.mid"):
 
-    
     # converter 음악 로드
     midi = converter.parse(file)
     
     print("Parsing %s" % file)
 
+    # note 를 분할?
     notes_to_parse = None
 
+    # file에 instrument parts가 있을 때
     try:
-        # file에 instrument parts가 있을 때
+        # 악기별로 나눈다?
         s2 = instrument.partitionByInstrument(midi)
+
+        # 재발? 뭔소리지
         notes_to_parse = s2.parts[0].recurse()
 
+    # file has notes in a flat structure 일때
     except Exception:
-        # file has notes in a flat structure
+        # flat note를 넣어줌
         notes_to_parse = midi.flat.notes
 
     for element in notes_to_parse:
