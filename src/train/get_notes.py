@@ -47,13 +47,18 @@ for file in glob.glob("./midi_songs/*.mid"):
         # flat note를 넣어줌
         notes_to_parse = midi.flat.notes
 
+    # parse 된 노트들의 엘리먼트 for문
     for element in notes_to_parse:
+        # note.Note
         if isinstance(element, note.Note):
             notes.append(str(element.pitch))
+        # chord.Chord
         elif isinstance(element, chord.Chord):
+            # normal Order를 하나씩 빼서 .으로 join해서 notes에 붙여
             notes.append('.'.join(str(n) for n in element.normalOrder))
 
 with open('data/notes2', 'wb') as filepath:
+    # notes를 해당 경로에 pickle.dump로 전부 쓰기
     pickle.dump(notes, filepath)
 
 print(notes)
