@@ -26,30 +26,39 @@ notes = []
 # glob - 디렉토리에 있는 파일 읽어오기
 for file in glob.glob("./midi_songs/*.mid"):
 
-    
     # converter 음악 로드
     midi = converter.parse(file)
     
     print("Parsing %s" % file)
 
+    # note 를 분할?
     notes_to_parse = None
 
+    # file에 instrument parts가 있을 때
     try:
-        # file에 instrument parts가 있을 때
+        # 악기별로 나눈다?
         s2 = instrument.partitionByInstrument(midi)
+
+        # 재발? 뭔소리지
         notes_to_parse = s2.parts[0].recurse()
 
+    # file has notes in a flat structure 일때
     except Exception:
-        # file has notes in a flat structure
+        # flat note를 넣어줌
         notes_to_parse = midi.flat.notes
 
+    # parse 된 노트들의 엘리먼트 for문
     for element in notes_to_parse:
+        # note.Note
         if isinstance(element, note.Note):
             notes.append(str(element.pitch))
+        # chord.Chord
         elif isinstance(element, chord.Chord):
+            # normal Order를 하나씩 빼서 .으로 join해서 notes에 붙여
             notes.append('.'.join(str(n) for n in element.normalOrder))
 
 with open('data/notes2', 'wb') as filepath:
+    # notes를 해당 경로에 pickle.dump로 전부 쓰기
     pickle.dump(notes, filepath)
 
 print(notes)
