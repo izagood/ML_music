@@ -4,19 +4,13 @@ import glob
 import pickle
 from typing import Any
 
-from music21 import instrument
-from music21 import converter
-from music21 import note
-from music21 import chord
+from music21 import *
 
 
-""" 모든 note 와 chors 는 ./midi_songs 경로에 있는 mid files에 있다."""
+us = environment.UserSettings()
+us.create()
+us['musescoreDirectPNGPath'] = 'C:/Program Files/MuseScore 3/bin/MuseScore3.exe'
 
-# glob - 디렉토리에 있는 파일 읽어오기
-for file in glob.glob("./midi_songs/*.mid"):
-    
-    midi = converter.parse(file)
-    
-    print("Parsing %s" % file)
-    
-    print(midi)
+n = note.Note("D#3")
+n.duration.type = 'half'
+n.show()
