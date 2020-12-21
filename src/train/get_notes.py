@@ -1,6 +1,19 @@
-""" This module prepares midi file data 
-and feeds it to the neural network for training """
+"""
+midi file을 불러와서 music21의 note와 chord형식으로 변환해주는 모듈이다.
 
+모든 note 와 chors 는 ./midi_songs 경로에 있는 mid files에 있다.
+
+file을 music21을 사용하여 streamObj로 로드(load)한다.
+streamObj를 사용하면 파일에 있는 모든 note와 chord 목록이 나온다.
+
+note - 계이름(pitch)의 문자열 표기법을 사용하여 다시 만들 수 있으므로
+모든 note 객체의 계이름을 문자열로 추가한다.
+
+그리고 각 note를 점(.)으로 나누어 현 안에 있는 모든 음들의 id를 하나의 
+문자열로 인코딩해서 모든 화음을 추가한다.
+이러한 인코딩을 통해 생성된 출력을 
+올바른 note와 chrod로 쉽게 디코딩할 수 있다.
+"""
 import glob
 import pickle
 
@@ -9,21 +22,16 @@ from music21 import converter
 from music21 import note
 from music21 import chord
 
-""" 모든 note 와 chors 는 ./midi_songs 경로에 있는 mid files에 있다."""
-
-""" file을 music21을 사용하여 streamObj로 로드(load)
-    streamObj를 사용하면 파일에 있는 모든 note와 chord 목록이 나온다.
-    note - 계이름(pitch)의 문자열 표기법을 사용하여 다시 만들 수 있으므로
-    모든 note 객체의 계이름을 문자열로 추가한다.
-    그리고 각 note를 점(.)으로 나누어 현 안에 있는 모든 음들의 id를 하나의 
-    문자열로 인코딩해서 모든 화음을 추가한다.
-    이러한 인코딩을 통해 생성된 출력을 
-    올바른 note와 chrod로 쉽게 디코딩할 수 있다."""
 
 # notes 리스트
 notes = []
 
-# glob - 디렉토리에 있는 파일 읽어오기
+""" 
+glob - 디렉토리에 있는 파일 읽어오기
+glob이 읽어 올때 list 형식으로 읽어온다.
+converter.parse()는 string 형식으로 들어와야 하기 때문에 단독 mid file을
+불러올 때는 file[n] 형식으로 불러와서 사용해야 함. 
+"""
 for file in glob.glob("./midi_songs/*.mid"):
 
     # converter 음악 로드
