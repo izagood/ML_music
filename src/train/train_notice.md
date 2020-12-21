@@ -14,7 +14,7 @@ pip install matplotlib
 'C:\Dev\workspace\Myproject\ML_music\src\train\C:\Program Files\MuseScore 3.5\MuseScore3.exe'
 ```
 형식의 에러가 발생할 때
-``` python
+```python
 us = environment.UserSettings()
 us['musescoreDirectPNGPath'] = 'C:/Program Files/MuseScore 3/bin/MuseScore3.exe'
 ```
