@@ -8,9 +8,12 @@ from music21 import *
 
 
 us = environment.UserSettings()
-us.create()
-us['musescoreDirectPNGPath'] = 'C:/Program Files/MuseScore 3/bin/MuseScore3.exe'
+# for key in sorted(us.keys()):
+#     print(key)
+# us['musescoreDirectPNGPath'] = 'C:/Program Files/MuseScore 3/bin/MuseScore3.exe'
 
 n = note.Note("D#3")
 n.duration.type = 'half'
 n.show()
+# us['musescoreDirectPNGPath'] = 'C:/Program Files/MuseScore 3/bin/MuseScore3.exe'
+# print(us['musescoreDirectPNGPath'])
