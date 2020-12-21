@@ -1,15 +1,15 @@
 # train 설정 관련 유의사항
-[music21 공식 문서](http://web.mit.edu/music21/doc/index.html)
+[music21 공식 문서](http://web.mit.edu/music21/doc/index.html)  
 [music21 공식 문서 - Module Reference](http://web.mit.edu/music21/doc/moduleReference/index.html)
 
 ## music21 사용할 때
 예시 코드에는 나와있지 않지만 matplotlib를 사용하고 있어 설치 해야함.
-``` console
+```
 pip install matplotlib
 ```
 
 ## show() 함수를 사용할 때 경로가 틀렸다고 나올 때 해결 방법
-``` console
+```
 [WinError 123] 파일 이름, 디렉터리 이름 또는 볼륨 레이블 구문이 잘못되었습니다:
 'C:\Dev\workspace\Myproject\ML_music\src\train\C:\Program Files\MuseScore 3.5\MuseScore3.exe'
 ```
