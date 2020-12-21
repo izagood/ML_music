@@ -1,4 +1,6 @@
 """
+get_notes.py
+
 midi file을 불러와서 music21의 note와 chord형식으로 변환해주는 모듈이다.
 
 모든 note 와 chors 는 ./midi_songs 경로에 있는 mid files에 있다.
@@ -29,14 +31,19 @@ notes = []
 """ 
 glob - 디렉토리에 있는 파일 읽어오기
 glob이 읽어 올때 list 형식으로 읽어온다.
-converter.parse()는 string 형식으로 들어와야 하기 때문에 단독 mid file을
-불러올 때는 file[n] 형식으로 불러와서 사용해야 함. 
 """
 for file in glob.glob("./midi_songs/*.mid"):
 
-    # converter 음악 로드
+    """
+    @function converter.parse() - 음악 로드
+    @param string
+    @return 
+
+    converter.parse()는 string 형식으로 들어와야 하기 때문에 단독 midi file을
+    불러올 때는 file[n] 형식으로 불러와서 사용해야 함. 
+    """
     midi = converter.parse(file)
-    
+
     print("Parsing %s" % file)
 
     # note 를 분할?
@@ -44,10 +51,36 @@ for file in glob.glob("./midi_songs/*.mid"):
 
     # file에 instrument parts가 있을 때
     try:
-        # 악기별로 나눈다?
+        """
+        @function instrument.partitionByInstrument()
+        @param streamObj
+        @return Score
+
+        단일 streamObj 또는 score 또는 유사한 다중 부분 구조(여러 악기가 합쳐진 구조)가 주어지면
+        각 고유 악기에 대해 부분으로 나누고 각 악기별로 합친다.
+        """
         s2 = instrument.partitionByInstrument(midi)
 
-        # 재발? 뭔소리지
+        """
+        함수 체인
+        Score -> stream.Part() -> stream.recurse()
+
+        @class music21.stream.Part(*args, **keywords)
+        
+        A Stream subclass for designating music that is considered a single part.
+        단일 part를 지정하기 위한 단일 stream 하위 클래스이다.
+        When put into a Score object, Part objects are all collected in the Score.parts call. Otherwise they mostly work like generic Streams.
+
+        Generally the hierarchy goes: Score > Part > Measure > Voice, but you are not required to stick to this.
+
+        Part groupings (piano braces, etc.) are found in the music21.layout module in the StaffGroup Spanner object.
+
+
+
+        Stream.recurse(*, streamsOnly=False, restoreActiveSites=True, 
+        classFilter=(), skipSelf=True, includeSelf=None) 
+        - 반복(iterate)할 수 있는 iterator로 리턴해줌.
+        """
         notes_to_parse = s2.parts[0].recurse()
 
     # file has notes in a flat structure 일때
