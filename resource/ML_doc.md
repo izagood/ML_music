@@ -37,13 +37,15 @@ stream 안에 존재하는 music21 객체가 가지고 있는 값들의 list를
 -------------------------------------------------------
 
 - LSTM layer
-@param_1 layer의 노드 수
+@param_1 layer의 노드 수  
+
 -------------------------
 어떤 시퀀스를 입력으로 넣었을 때 출력으로  
 또 다른 시퀀스 또는 행렬을 주는 RNN이다.
 
 - dropout layer
-@param_1 삭제해야 하는 비율, 무작위 결정 노드 비율
+@param_1 삭제해야 하는 비율, 무작위 결정 노드 비율  
+
 -------------------------------------------------
 모델을 학습시킬 때 오버피팅이 되는 것을 방지하는 방법  
   - 모든 뉴런으로 학습하는 것이 아니라 무작위로 학습에 쓸 뉴런을
@@ -51,12 +53,14 @@ stream 안에 존재하는 music21 객체가 가지고 있는 값들의 list를
   - mini-batch 마다 랜덤으로 뉴런이 달라지기 때문에 다양한 모델을 쓰는 듯한 효과
 
 - Dense layer 또는 Fully connected layer
-@param_1 layer의 노드 수
+@param_1 layer의 노드 수  
+
 -----------------------
 이전 layer의 모든 뉴런과 결합된 형태의 layer
 
 - Activation layer
-@param_1 layer의 노드 수
+@param_1 layer의 노드 수  
+
 -----------------------
 신경망이 노드의 출력을 계산하는데 사용할 활성화 기능을 결정
 
@@ -69,10 +73,11 @@ stream 안에 존재하는 music21 객체가 가지고 있는 값들의 list를
         - RMSprop optimizer : 일반적으로 RNN에 적합
 
 - model.fit()
-@param_1 입력 시퀀스 목록
-@param_2 각 출력의 목록
-@param_3 batch_size 샘플을 포함한 각 batch에 대해
-@param_4 epochs 설정된 횟수 동안 네트워크를 학습
+@param_1 입력 시퀀스 목록  
+@param_2 각 출력의 목록  
+@param_3 batch_size 샘플을 포함한 각 batch에 대해  
+@param_4 epochs 설정된 횟수 동안 네트워크를 학습  
+
 ----------------------------------------------
 신경망을 학습하는데 사용
 
