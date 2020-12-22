@@ -1,12 +1,31 @@
-# train 설정 관련 유의사항
+# train 안내문
 [music21 공식 문서](http://web.mit.edu/music21/doc/index.html)  
 [music21 공식 문서 - Module Reference](http://web.mit.edu/music21/doc/moduleReference/index.html)
+### 주석은 각 모듈별 .py에 있음
 
 ## music21 사용할 때
 예시 코드에는 나와있지 않지만 matplotlib를 사용하고 있어 설치 해야함.
 ```
 pip install matplotlib
 ```
+
+## 함수 설명
+### get_notes()
+@param X
+@return notes
+-------------
+.mid 파일을 streamObj로 load하고 note와 chord로 변환한다.
+### prepare_sequences()
+@param_1 notes
+@param_2 n_vocab
+@return (network_input, network_output)
+---------------------------------------
+notes = note, chord 배열
+n_vocab = len(set(notes)) - note 집합 길이
+### create_network()
+
+### train()
+### train_network()
 
 ## show() 함수를 사용할 때 경로가 틀렸다고 나올 때 해결 방법
 ```
