@@ -11,31 +11,31 @@ pip install matplotlib
 
 ## 함수 설명
 ### get_notes()
-@param X
-@return notes
+@param X  
+@return notes  
 -------------
 .mid 파일을 streamObj로 load하고 note와 chord로 변환한다.
 ### prepare_sequences()
-@param_1 notes
-@param_2 n_vocab
-@return (network_input, network_output)
+@param_1 notes  
+@param_2 n_vocab  
+@return (network_input, network_output)  
 ---------------------------------------
-notes = note, chord 배열
-n_vocab = len(set(notes)) - note 집합 길이
+notes = note, chord 배열  
+n_vocab = len(set(notes)) - note 집합 길이  
 ### create_network()
-@param_1 network_input
-@param_2 n_vocab
-@return model
+@param_1 network_input  
+@param_2 n_vocab  
+@return model  
 -------------------------
 ### train()
-@param_1 model
-@param_2 network_input
-@param_2 network_output
-@return X
+@param_1 model  
+@param_2 network_input  
+@param_2 network_output  
+@return X  
 ----------------------
 ### train_network()
-@param_1 X
-@return X
+@param_1 X  
+@return X  
 ---------------------
 
 ### 함수 구조
