@@ -12,18 +12,19 @@
 - music, text 생성에 잘 맞는 기법
 
 # music21
-- music21.converter
+### music21.converter
 다양한 음악 파일 포맷으로부터 음악을 로드하는 툴  
 
-- music21.converter.parse()
+### music21.converter.parse()
 파일의 item을 파싱하고 stream에 넣어줌  
-@param string
+@param string  
 
-- music21.instrument.partitionByInstrument()
+---------------------------------------------
+### music21.instrument.partitionByInstrument()
 단일 stream, score, multi part 구조인 경우에 각각의  
 악기별로 파티션을 나누고 다른 part들을 악기별로 합쳐준다.  
 
-- music21.stream.recurse()
+### music21.stream.recurse()
 stream 안에 존재하는 music21 객체가 가지고 있는 값들의 list를  
 반복(iterate)할 수 있는 iterator로 return해준다.
 
@@ -36,14 +37,14 @@ stream 안에 존재하는 music21 객체가 가지고 있는 값들의 list를
 - 마지막 layer는 다른 함수들과 node 수를 일치시켜야 한다.  
 -------------------------------------------------------
 
-- LSTM layer
+#### LSTM layer
 @param_1 layer의 노드 수  
 
 -------------------------
 어떤 시퀀스를 입력으로 넣었을 때 출력으로  
 또 다른 시퀀스 또는 행렬을 주는 RNN이다.
 
-- dropout layer
+#### dropout layer
 @param_1 삭제해야 하는 비율, 무작위 결정 노드 비율  
 
 -------------------------------------------------
@@ -52,13 +53,13 @@ stream 안에 존재하는 music21 객체가 가지고 있는 값들의 list를
   정해서 학습을 진행
   - mini-batch 마다 랜덤으로 뉴런이 달라지기 때문에 다양한 모델을 쓰는 듯한 효과
 
-- Dense layer 또는 Fully connected layer
+#### Dense layer 또는 Fully connected layer  
 @param_1 layer의 노드 수  
 
 -----------------------
 이전 layer의 모든 뉴런과 결합된 형태의 layer
 
-- Activation layer
+#### Activation layer  
 @param_1 layer의 노드 수  
 
 -----------------------
@@ -72,7 +73,7 @@ stream 안에 존재하는 music21 객체가 가지고 있는 값들의 list를
     - 네트워크를 최적화 시키기 위해 RMSprop optimizer를 사용
         - RMSprop optimizer : 일반적으로 RNN에 적합
 
-- model.fit()
+#### model.fit()
 @param_1 입력 시퀀스 목록  
 @param_2 각 출력의 목록  
 @param_3 batch_size 샘플을 포함한 각 batch에 대해  
@@ -81,7 +82,7 @@ stream 안에 존재하는 music21 객체가 가지고 있는 값들의 list를
 ----------------------------------------------
 신경망을 학습하는데 사용
 
-- ModelCheckpoint()
+#### ModelCheckpoint()
 매 epoch마다 네트워크 노드의 가중치를 파일에 저장할 수 있음.  
 가중치를 잃어 버릴 걱정 없이 손실값에 만족하면 학습을 멈출 수 있음.  
 *ModelCheckpoint()가 없으면 200 epochs가 전부 끝날 때까지 기다려야 함.*
