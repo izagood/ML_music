@@ -23,9 +23,26 @@ pip install matplotlib
 notes = note, chord 배열
 n_vocab = len(set(notes)) - note 집합 길이
 ### create_network()
-
+@param_1 network_input
+@param_2 n_vocab
+@return model
+-------------------------
 ### train()
+@param_1 model
+@param_2 network_input
+@param_2 network_output
+@return X
+----------------------
 ### train_network()
+@param_1 X
+@return X
+---------------------
+
+### 함수 구조
+#### 함수 개관
+![함수 개관](../../images/train_notice/function_structure1.jpg)
+#### 함수 연계
+![함수 연계](../../images/train_notice/function_structure2.jpg)
 
 ## show() 함수를 사용할 때 경로가 틀렸다고 나올 때 해결 방법
 ```
