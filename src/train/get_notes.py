@@ -1,6 +1,6 @@
 """
 get_notes.py
-
+------------
 midi file을 불러와서 music21의 note와 chord형식으로 변환해주는 모듈이다.
 
 모든 note 와 chors 는 ./midi_songs 경로에 있는 mid files에 있다.
@@ -33,12 +33,11 @@ glob - 디렉토리에 있는 파일 읽어오기
 glob이 읽어 올때 list 형식으로 읽어온다.
 """
 for file in glob.glob("./midi_songs/*.mid"):
-
     """
-    @function converter.parse() - 음악 로드
-    @param string
-    @return 
-
+    @  function converter.parse() - 음악 로드
+    @  param value: Union[music21.metadata.bundles.MetadataEntry, bytes, str, pathlib.Path], *args, **keywords
+    @return music21.stream.Stream
+    ----------------------------------------
     converter.parse()는 string 형식으로 들어와야 하기 때문에 단독 midi file을
     불러올 때는 file[n] 형식으로 불러와서 사용해야 함. 
     """
@@ -55,7 +54,7 @@ for file in glob.glob("./midi_songs/*.mid"):
         @function instrument.partitionByInstrument()
         @param streamObj
         @return Score
-
+        -------------------------------------------
         단일 streamObj 또는 score 또는 유사한 다중 부분 구조(여러 악기가 합쳐진 구조)가 주어지면
         각 고유 악기에 대해 부분으로 나누고 각 악기별로 합친다.
         """
@@ -64,28 +63,42 @@ for file in glob.glob("./midi_songs/*.mid"):
         """
         함수 체인
         Score -> stream.Part() -> stream.recurse()
-
+        ------------------------------------------
         @class music21.stream.Part(*args, **keywords)
-        
+        ----------------------------------------------
         A Stream subclass for designating music that is considered a single part.
-        단일 part를 지정하기 위한 단일 stream 하위 클래스이다.
-        When put into a Score object, Part objects are all collected in the Score.parts call. Otherwise they mostly work like generic Streams.
+        단일 part로 간주되는 음악을 지정하기 위한 단일 stream 하위 클래스이다.
 
-        Generally the hierarchy goes: Score > Part > Measure > Voice, but you are not required to stick to this.
+        When put into a Score object,
+        Score 객체에 넣었을 때
+        
+        Part objects are all collected in the Score.parts call. 
+        Score.parts 호출에 모두 Part 객체가 수집된다.
+
+        Otherwise they mostly work like generic Streams.
+        그렇지 않으면 대부분 일반적인 Streams처럼 작동한다
+
+        Generally the hierarchy goes: Score > Part > Measure > Voice, 
+        일반적으로 Score > Part > Measure > Voice 순으로 지정되지만,
+        
+        but you are not required to stick to this.
+        이렇게 사용해야하는건 아님.
 
         Part groupings (piano braces, etc.) are found in the music21.layout module in the StaffGroup Spanner object.
-
-
-
+        Part grouping(피아노 braces 등)은 Staff Group Spanner 객체의 music21.layout 모듈에 있다.
+        --------------------------------------------------------------------------------------
         Stream.recurse(*, streamsOnly=False, restoreActiveSites=True, 
-        classFilter=(), skipSelf=True, includeSelf=None) 
-        - 반복(iterate)할 수 있는 iterator로 리턴해줌.
+        classFilter=(), skipSelf=True, includeSelf=None)
+        -------------------------------------------------
+        반복(iterate)할 수 있는 iterator로 리턴해줌.
         """
         notes_to_parse = s2.parts[0].recurse()
 
     # file has notes in a flat structure 일때
     except Exception:
-        # flat note를 넣어줌
+        """
+        music21.stream.Stream.flat.notes
+        """
         notes_to_parse = midi.flat.notes
 
     # parse 된 노트들의 엘리먼트 for문
