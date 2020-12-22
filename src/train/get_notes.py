@@ -98,17 +98,31 @@ for file in glob.glob("./midi_songs/*.mid"):
     except Exception:
         """
         music21.stream.Stream.flat.notes
+        --------------------------------
+        Stream.flat은 모든 note를 가져올 수 있는 방법이다.
         """
         notes_to_parse = midi.flat.notes
 
     # parse 된 노트들의 엘리먼트 for문
     for element in notes_to_parse:
+        '''
+        @function isinstance()
+        ---------------------
+        @param1 변수 
+        @param2 클래스명
+        @return boolean
+        '''
         # note.Note
         if isinstance(element, note.Note):
             notes.append(str(element.pitch))
         # chord.Chord
         elif isinstance(element, chord.Chord):
-            # normal Order를 하나씩 빼서 .으로 join해서 notes에 붙여
+            '''
+            @field Chord.normalOrder
+            ------------------------
+            @return Chord를 정수 list로
+            '''
+            # normalOrder로 Chord의 정수 list를 하나씩 빼서 .으로 join해서 notes에 붙인다.
             notes.append('.'.join(str(n) for n in element.normalOrder))
 
 with open('data/notes2', 'wb') as filepath:
