@@ -1,6 +1,8 @@
 """
 prepare_sequences.py
 --------------------
+mid파일에서 받은 notes와 notes들의 집합 n_vocab을 매개변수로 받아
+(network_input, network_output)를 return 한다.
 
 """
 import glob
