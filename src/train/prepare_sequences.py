@@ -22,14 +22,17 @@ from tensorflow.keras.layers import Activation
 from tensorflow.keras.layers import BatchNormalization
 from tensorflow.keras.utils import np_utils
 from tensorflow.keras.callbacks import ModelCheckpoint
+
 # get_notes주석은 get_notes.py에 있음
+
+
 def get_notes():
     notes = []
 
     for file in glob.glob("../../midi_songs/*.mid"):
 
         midi = converter.parse(file)
-        
+
         print("Parsing %s" % file)
 
         notes_to_parse = None
@@ -51,14 +54,19 @@ def get_notes():
 
     return notes
 
+
+# 매개변수 기본 세팅
 notes = get_notes()
 n_vocab = len(set(notes))
 
+
 def prepare_sequences(notes, n_vocab):
-    """ Prepare the sequences used by the Neural Network """
+    """
+    뉴런 네트워크를 이용해서 시퀀스를 준비한다.
+    """
     sequence_length = 100
 
-    # get all pitch names
+    # get all pitch names 모든 계이름을 가져온다.
     pitchnames = sorted(set(item for item in notes))
 
     # create a dictionary to map pitches to integers
@@ -86,6 +94,7 @@ def prepare_sequences(notes, n_vocab):
     network_output = np_utils.to_categorical(network_output)
 
     return (network_input, network_output)
+
 
 if __name__ == '__main__':
     prepare_sequences(notes, n_vocab)
