@@ -56,14 +56,15 @@ def get_notes():
 
 
 # 매개변수 기본 세팅
-notes = get_notes()
-n_vocab = len(set(notes))
+notes = get_notes() # list
+n_vocab = len(set(notes)) # int
 
 
 def prepare_sequences(notes, n_vocab):
     """
     뉴런 네트워크를 이용해서 시퀀스를 준비한다.
     """
+    # 시퀀스 길이 100
     sequence_length = 100
 
     # get all pitch names
