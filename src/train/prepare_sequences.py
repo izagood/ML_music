@@ -66,10 +66,12 @@ def prepare_sequences(notes, n_vocab):
     """
     sequence_length = 100
 
-    # get all pitch names 모든 계이름을 가져온다.
+    # get all pitch names
+    # 모든 계이름을 가져온다.
     pitchnames = sorted(set(item for item in notes))
 
     # create a dictionary to map pitches to integers
+    # 정수에 계이름을 매핑하는 dictionary을 만든다. 
     note_to_int = dict((note, number)
                        for number, note in enumerate(pitchnames))
 
@@ -77,6 +79,7 @@ def prepare_sequences(notes, n_vocab):
     network_output = []
 
     # create input sequences and the corresponding outputs
+    # 입력 시퀀스 및 해당 출력을 생성한다.
     for i in range(0, len(notes) - sequence_length, 1):
         sequence_in = notes[i:i + sequence_length]
         sequence_out = notes[i + sequence_length]
@@ -86,9 +89,11 @@ def prepare_sequences(notes, n_vocab):
     n_patterns = len(network_input)
 
     # reshape the input into a format compatible with LSTM layers
+    # LSTM 레이어와 호환되는 형식으로 입력 내용을 변경한다.
     network_input = numpy.reshape(
         network_input, (n_patterns, sequence_length, 1))
     # normalize input
+    # input 정상화
     network_input = network_input / float(n_vocab)
 
     network_output = np_utils.to_categorical(network_output)
