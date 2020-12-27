@@ -1,4 +1,6 @@
-""" This module prepares midi file data and feeds it to the neural network for training """
+"""
+이전의 모든 모듈의 실행시키는 train_network 함수를 실행시킨다.
+"""
 
 import glob
 import pickle

@@ -1,4 +1,14 @@
-""" This module prepares midi file data and feeds it to the neural network for training """
+"""
+create_network.py
+-----------------
+
+.mid 파일에서 note와 chord로 추출한 notes와 notes의 집합 n_vocab을 받아
+(network_input, network_output)를 return하고
+
+network_input과 n_vocab을 받아
+
+LSTM 네트워크를 학습시키고 model을 return 한다.
+"""
 
 import glob
 import pickle
