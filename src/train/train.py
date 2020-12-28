@@ -1,4 +1,15 @@
-""" This module prepares midi file data and feeds it to the neural network for training """
+"""
+train.py
+--------
+model, network_input, network_output를 매개변수로 받아
+신경망 훈련을 시킨다.
+ModelCheckpoint을 사용하여 학습 중간에 종료하여도 학습된 가중치를
+손실하지 않을 수 있다.
+
+model.fit()
+
+
+"""
 
 import glob
 import pickle
